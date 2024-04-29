@@ -1,0 +1,41 @@
+@startuml 
+
+actor Tenant 
+participant "Rental Properties" as rentalproperties 
+participant "Rental Proposal" as rentalproposal 
+participant Payments 
+actor Landlord 
+actor Realtor 
+
+Tenant -> rentalproperties: search for a property 
+activate rentalproperties 
+  rentalproperties -> Tenant: returns search result 
+deactivate rentalproperties 
+Tenant -> rentalproposal: sends a rentalproposal 
+activate rentalproposal 
+  rentalproposal-->Landlord: receives proposal 
+deactivate rentalproposal 
+Landlord -> rentalproposal: sends counteroffer 
+activate rentalproposal 
+  rentalproposal-->Tenant: receives counteroffer 
+deactivate rentalproposal 
+Tenant -> rentalproposal: sends counteroffer 
+activate rentalproposal 
+  rentalproposal-->Landlord: receives counteroffer 
+deactivate rentalproposal 
+Landlord -> rentalproposal: accepts counteroffer 
+activate rentalproposal 
+  rentalproposal --> Tenant: receives notification 
+deactivate rentalproposal 
+Tenant -> Payments: confirms payment info 
+activate Payments 
+  Payments --> Landlord: receives payment 
+  Payments --> Realtor: receives payment 
+activate rentalproperties 
+  rentalproperties --> Payments: observes successful payment 
+  rentalproperties -> rentalproperties: reserves rental property 
+  rentalproperties --> Tenant: notifies property  
+deactivate rentalproperties 
+deactivate Payments 
+
+@enduml 
