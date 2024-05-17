@@ -14,9 +14,12 @@ public class IpController {
             (ServletRequestAttributes) RequestContextHolder
                 .getRequestAttributes();
 
-        return "Your IP Address is: " +
-            requestAttributes
-                .getRequest()
-                .getRemoteAddr();
+        if (requestAttributes != null) {
+            return "Your IP Address is: " +
+                requestAttributes
+                    .getRequest()
+                    .getRemoteAddr();
+        }
+        return "It was not possible to find your IP.";
     }
 }
