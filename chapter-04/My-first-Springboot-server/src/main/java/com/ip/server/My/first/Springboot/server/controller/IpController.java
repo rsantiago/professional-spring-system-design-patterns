@@ -20,6 +20,6 @@ public class IpController {
                     .getRequest()
                     .getRemoteAddr();
         }
-        return "It was not possible to find your IP.";
+        return "Error while trying to get your IP.";
     }
 }
