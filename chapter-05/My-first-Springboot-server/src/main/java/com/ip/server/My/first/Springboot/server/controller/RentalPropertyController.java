@@ -19,14 +19,9 @@ public class RentalPropertyController {
 
     private final RentalPropertyService rentalPropertyService;
 
-    public RentalPropertyController(RentalPropertyService rentalPropertyService) {
+    public RentalPropertyController(
+            RentalPropertyService rentalPropertyService) {
         this.rentalPropertyService = rentalPropertyService;
-    }
-
-    @GetMapping(produces = "application/json")
-    public ResponseEntity<List<RentalPropertyDTO>> getAllProperties() {
-        return ResponseEntity.ok()
-            .body(rentalPropertyService.getAllProperties());
     }
 
     @GetMapping(
@@ -46,7 +41,8 @@ public class RentalPropertyController {
     public ResponseEntity<RentalPropertyDTO> createProperty(
         @Valid @RequestBody RentalPropertyDTO property) {
 
-        RentalPropertyDTO createdRentalProperty = rentalPropertyService.create(property);
+        RentalPropertyDTO createdRentalProperty
+                = rentalPropertyService.create(property);
 
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(createdRentalProperty);
@@ -60,7 +56,8 @@ public class RentalPropertyController {
         @PathVariable UUID id,
         @Valid @RequestBody RentalPropertyDTO updatedProperty) {
 
-        return rentalPropertyService.update(id, updatedProperty)
+        return rentalPropertyService
+            .update(id, updatedProperty)
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(null));
@@ -75,7 +72,7 @@ public class RentalPropertyController {
         @RequestBody RentalPropertyDTO partialUpdate) {
 
         return rentalPropertyService
-            .updateSomeFields(partialUpdate)
+            .updateSomeFields(id, partialUpdate)
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND)
             .body(null));
@@ -83,9 +80,13 @@ public class RentalPropertyController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProperty(@PathVariable UUID id) {
-        return rentalPropertyService.delete(id)
-            .map(opt -> ResponseEntity.noContent().<Void>build())
-            .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+        return rentalPropertyService
+            .delete(id)
+            .map(opt ->
+                ResponseEntity.noContent()
+                    .<Void>build())
+            .orElse(ResponseEntity
+                .status(HttpStatus.NOT_FOUND).build());
     }
 
     @GetMapping(
@@ -108,5 +109,12 @@ public class RentalPropertyController {
     public ResponseEntity<String> getHeaderInfo(
             @RequestHeader("User-Agent") String userAgent) {
         return ResponseEntity.ok("User-Agent: " + userAgent);
+    }
+
+
+    @GetMapping(produces = "application/json")
+    public ResponseEntity<List<RentalPropertyDTO>> getAllProperties() {
+        return ResponseEntity.ok()
+                .body(rentalPropertyService.getAllProperties());
     }
 }

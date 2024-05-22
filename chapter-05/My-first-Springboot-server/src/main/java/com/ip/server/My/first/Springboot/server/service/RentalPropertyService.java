@@ -17,7 +17,7 @@ public interface RentalPropertyService {
 
     Optional<RentalPropertyDTO> update(UUID id, RentalPropertyDTO updatedProperty);
 
-    Optional<RentalPropertyDTO> updateSomeFields(RentalPropertyDTO partialUpdate);
+    Optional<RentalPropertyDTO> updateSomeFields(UUID id, RentalPropertyDTO partialUpdate);
 
     Optional<RentalPropertyDTO> delete(UUID id);
 
