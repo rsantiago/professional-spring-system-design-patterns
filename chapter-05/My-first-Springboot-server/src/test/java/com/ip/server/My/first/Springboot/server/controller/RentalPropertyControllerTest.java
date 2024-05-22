@@ -56,9 +56,9 @@ public class RentalPropertyControllerTest {
 
     private RentalPropertyDTO createProperty() throws Exception {
         RentalPropertyDTO property = new RentalPropertyDTO(
-        null, "Test Property", "123 Test St",
-        "Test City", "Test Country", "12345",
-        1200.0);
+        null, UUID.randomUUID(),"Test Property",
+        "123 Test St","Test City",
+        "Test Country", "12345",1200.0);
 
         // Simulate creating a property
         String responseBody = mockMvc.perform(
@@ -75,10 +75,10 @@ public class RentalPropertyControllerTest {
     @Test
     void testCreateProperty() throws Exception {
         RentalPropertyDTO newProperty = new RentalPropertyDTO(
-            UUID.randomUUID(), "New Property",
-            "456 New St", "New City",
-            "New Country", "67890",
-            1500.0);
+            UUID.randomUUID(), UUID.randomUUID(),
+            "New Property", "456 New St",
+            "New City", "New Country",
+            "67890",1500.0);
 
         mockMvc.perform(
                 post("/api/v1/rental-properties")
@@ -94,9 +94,10 @@ public class RentalPropertyControllerTest {
         RentalPropertyDTO createdProperty = createProperty();
 
         RentalPropertyDTO updatedProperty = new RentalPropertyDTO(
-            createdProperty.id(), "Updated Property",
-            "123 Updated St", "Updated City",
-            "Updated Country", "54321", 1800.0);
+            createdProperty.id(), UUID.randomUUID(),
+            "Updated Property","123 Updated St",
+            "Updated City", "Updated Country",
+            "54321", 1800.0);
 
         mockMvc.perform(
                 put("/api/v1/rental-properties/{id}",
@@ -113,7 +114,8 @@ public class RentalPropertyControllerTest {
         RentalPropertyDTO createdProperty = createProperty();
 
         RentalPropertyDTO partialUpdate = new RentalPropertyDTO(
-            createdProperty.id(), "Partially Updated Property",
+            createdProperty.id(), UUID.randomUUID(),
+            "Partially Updated Property",
             null, null,
             null, null, null);
 

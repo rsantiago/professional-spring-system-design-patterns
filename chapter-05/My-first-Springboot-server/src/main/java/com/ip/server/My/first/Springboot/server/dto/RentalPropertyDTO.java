@@ -8,6 +8,9 @@ import java.util.UUID;
 public record RentalPropertyDTO(
         UUID id,
 
+        @NotNull(message = "Landlord id is required")
+        UUID landlordID,
+
         @NotEmpty(message = "Name is required")
         String name,
 

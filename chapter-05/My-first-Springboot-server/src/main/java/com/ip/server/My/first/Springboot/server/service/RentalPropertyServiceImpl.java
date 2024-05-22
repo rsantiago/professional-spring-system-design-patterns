@@ -26,7 +26,8 @@ public class RentalPropertyServiceImpl implements RentalPropertyService{
         UUID id = UUID.randomUUID();
         RentalPropertyDTO newProperty =
                 new RentalPropertyDTO(
-                        id, property.name(), property.address(),
+                        id, property.landlordID(),
+                        property.name(), property.address(),
                         property.city(), property.country(),
                         property.zipCode(), property.rent());
 
@@ -44,6 +45,7 @@ public class RentalPropertyServiceImpl implements RentalPropertyService{
                     id,
                     (foundId, oldProperty) -> new RentalPropertyDTO(
                         id,
+                        updatedProperty.landlordID(),
                         updatedProperty.name(),
                         updatedProperty.address(),
                         updatedProperty.city(),
@@ -53,9 +55,10 @@ public class RentalPropertyServiceImpl implements RentalPropertyService{
     }
 
     @Override
-    public Optional<RentalPropertyDTO> updateSomeFields(RentalPropertyDTO partialUpdate) {
+    public Optional<RentalPropertyDTO> updateSomeFields(UUID id, RentalPropertyDTO partialUpdate) {
         return Optional.ofNullable(
-                rentalProperties.computeIfPresent(partialUpdate.id(), (id, existingProperty) -> {
+                rentalProperties.computeIfPresent(id, (updatedId, existingProperty) -> {
+            UUID landlordId = partialUpdate.landlordID() != null ? partialUpdate.landlordID() : existingProperty.landlordID();
             String newName = partialUpdate.name() != null ? partialUpdate.name() : existingProperty.name();
             String newAddress = partialUpdate.address() != null ? partialUpdate.address() : existingProperty.address();
             String newCity = partialUpdate.city() != null ? partialUpdate.city() : existingProperty.city();
@@ -63,7 +66,7 @@ public class RentalPropertyServiceImpl implements RentalPropertyService{
             String newZipCode = partialUpdate.zipCode() != null ? partialUpdate.zipCode() : existingProperty.zipCode();
             Double newRent = partialUpdate.rent() != null ? partialUpdate.rent() : existingProperty.rent();
 
-            return new RentalPropertyDTO(partialUpdate.id(), newName, newAddress, newCity, newCountry, newZipCode, newRent);
+            return new RentalPropertyDTO(partialUpdate.id(), landlordId, newName, newAddress, newCity, newCountry, newZipCode, newRent);
         }));
     }
 
