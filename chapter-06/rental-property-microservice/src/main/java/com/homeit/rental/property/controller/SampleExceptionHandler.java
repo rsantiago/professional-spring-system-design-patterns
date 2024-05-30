@@ -1,4 +1,4 @@
-package com.ip.server.My.first.Springboot.server.controller;
+package com.homeit.rental.property.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;

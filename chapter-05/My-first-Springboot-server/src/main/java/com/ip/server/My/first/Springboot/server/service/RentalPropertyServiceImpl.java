@@ -1,6 +1,6 @@
-package com.homeit.rental.property.service;
+package com.ip.server.My.first.Springboot.server.service;
 
-import com.homeit.rental.property.dto.RentalPropertyDTO;
+import com.ip.server.My.first.Springboot.server.dto.RentalPropertyDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.*;

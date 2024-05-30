@@ -1,4 +1,4 @@
-package com.homeit.rental.property.controller;
+package com.ip.server.My.first.Springboot.server.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;

@@ -1,7 +1,7 @@
-package com.homeit.rental.property.controller;
+package com.ip.server.My.first.Springboot.server.controller;
 
-import com.homeit.rental.property.dto.RentalPropertyDTO;
-import com.homeit.rental.property.service.RentalPropertyService;
+import com.ip.server.My.first.Springboot.server.dto.RentalPropertyDTO;
+import com.ip.server.My.first.Springboot.server.service.RentalPropertyService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -116,5 +116,12 @@ public class RentalPropertyController {
     public ResponseEntity<List<RentalPropertyDTO>> getAllProperties() {
         return ResponseEntity.ok()
                 .body(rentalPropertyService.getAllProperties());
+    }
+
+
+    @GetMapping(value = "/error")
+    public ResponseEntity<List<RentalPropertyDTO>> runtimeExceptionSample() {
+        throw new RuntimeException
+                ("This was a sample unhandled runtime exception");
     }
 }

@@ -1,4 +1,4 @@
-package com.homeit.rental.property.dto;
+package com.ip.server.My.first.Springboot.server.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
