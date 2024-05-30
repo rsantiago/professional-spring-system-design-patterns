@@ -9,7 +9,6 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -17,6 +16,7 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -56,8 +56,9 @@ public class SampleExceptionHandlerTest {
                 .contentType("application/json"))
             .andExpect(status().is5xxServerError())
             .andExpect(jsonPath("$.title")
-                .value("Customized Internal Server Error"))
-        ;
+                .value("Customized Internal Server Error"));
+        Mockito.verify(rentalPropertyServiceMock,
+                times(1)).get(any());
     }
 
     @Test
