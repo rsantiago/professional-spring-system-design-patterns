@@ -2,6 +2,7 @@ package com.homeit.rental.property.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.homeit.rental.property.dto.RentalPropertyDTO;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,6 +94,21 @@ public class RentalPropertyControllerTest {
             .andExpect(status().isCreated())
             .andExpect(jsonPath("$.name")
                 .value("New Property"));
+    }
+
+    @Test
+    void testCreatePropertyErrorNullAddress() throws Exception {
+        RentalPropertyDTO newProperty = new RentalPropertyDTO(
+                UUID.randomUUID(), UUID.randomUUID(),
+                "New Property", null,
+                "New City", "New Country",
+                "67890",1500.0);
+
+        mockMvc.perform(
+                post("/api/v1/rental-properties")
+                    .contentType("application/json")
+                    .content(objectMapper.writeValueAsString(newProperty)))
+            .andExpect(status().isBadRequest());
     }
 
     @Test
