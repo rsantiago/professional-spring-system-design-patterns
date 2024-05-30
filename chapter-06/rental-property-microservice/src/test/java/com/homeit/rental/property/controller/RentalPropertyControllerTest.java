@@ -18,18 +18,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 public class RentalPropertyControllerTest {
 
-    @Autowired
-    private WebApplicationContext context;
+    private final WebApplicationContext context;
+    private final ObjectMapper objectMapper;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    RentalPropertyControllerTest(
+            WebApplicationContext context,
+            ObjectMapper objectMapper){
+        this.context = context;
+        this.objectMapper = objectMapper;
+    }
 
+
+    private RentalPropertyDTO createdProperty;
     private MockMvc mockMvc;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws Exception {
         mockMvc = MockMvcBuilders
-                .webAppContextSetup(context).build();
+            .webAppContextSetup(context).build();
+        createdProperty = createProperty();
     }
 
     @Test
@@ -43,8 +51,6 @@ public class RentalPropertyControllerTest {
 
     @Test
     void testGetPropertyById() throws Exception {
-        RentalPropertyDTO createdProperty = createProperty();
-
         mockMvc.perform(
                 get("/api/v1/rental-properties/{id}",
                     createdProperty.id())
@@ -91,8 +97,6 @@ public class RentalPropertyControllerTest {
 
     @Test
     void testUpdateProperty() throws Exception {
-        RentalPropertyDTO createdProperty = createProperty();
-
         RentalPropertyDTO updatedProperty = new RentalPropertyDTO(
             createdProperty.id(), UUID.randomUUID(),
             "Updated Property","123 Updated St",
@@ -111,8 +115,6 @@ public class RentalPropertyControllerTest {
 
     @Test
     void testPatchProperty() throws Exception {
-        RentalPropertyDTO createdProperty = createProperty();
-
         RentalPropertyDTO partialUpdate = new RentalPropertyDTO(
             createdProperty.id(), UUID.randomUUID(),
             "Partially Updated Property",
@@ -131,11 +133,11 @@ public class RentalPropertyControllerTest {
 
     @Test
     void testDeleteProperty() throws Exception {
-        RentalPropertyDTO property = createProperty();
+        RentalPropertyDTO propertyToDelete = createProperty();
 
         mockMvc.perform(
                 delete("/api/v1/rental-properties/{id}",
-                    property.id())
+                    propertyToDelete.id())
                 .contentType("application/json"))
             .andExpect(status().isNoContent());
     }
