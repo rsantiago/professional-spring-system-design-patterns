@@ -1,0 +1,225 @@
+openapi: "3.1.0"
+info:
+  title: "professional_spring_system_design_patterns API"
+  description: "professional_spring_system_design_patterns API"
+  version: "1.0.0"
+servers:
+  - url: "https://professional_spring_system_design_patterns"
+paths:
+  /api/v1/rental-properties:
+    get:
+      summary: "GET api/v1/rental-properties"
+      operationId: "getAllProperties"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/RentalPropertyDTO"
+    post:
+      summary: "POST api/v1/rental-properties"
+      operationId: "createProperty"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RentalPropertyDTO"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RentalPropertyDTO"
+  /api/v1/rental-properties/error:
+    get:
+      summary: "GET api/v1/rental-properties/error"
+      operationId: "runtimeExceptionSample"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/RentalPropertyDTO"
+  /api/v1/rental-properties/headers:
+    get:
+      summary: "GET api/v1/rental-properties/headers"
+      operationId: "getHeaderInfo"
+      parameters:
+        - name: "User-Agent"
+          in: "header"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: "string"
+  /api/v1/rental-properties/search:
+    get:
+      summary: "GET api/v1/rental-properties/search"
+      operationId: "searchProperties"
+      parameters:
+        - name: "name"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+        - name: "address"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+        - name: "city"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+        - name: "country"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+        - name: "zipCode"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/RentalPropertyDTO"
+  /api/v1/rental-properties/thread-model:
+    get:
+      summary: "GET api/v1/rental-properties/thread-model"
+      operationId: "getThreadName"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+  /api/v1/rental-properties/{id}:
+    get:
+      summary: "GET api/v1/rental-properties/{id}"
+      operationId: "getPropertyById"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RentalPropertyDTO"
+    put:
+      summary: "PUT api/v1/rental-properties/{id}"
+      operationId: "updateProperty"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RentalPropertyDTO"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RentalPropertyDTO"
+    patch:
+      summary: "PATCH api/v1/rental-properties/{id}"
+      operationId: "patchProperty"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RentalPropertyDTO"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RentalPropertyDTO"
+    delete:
+      summary: "DELETE api/v1/rental-properties/{id}"
+      operationId: "deleteProperty"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Void"
+components:
+  schemas:
+    RentalPropertyDTO:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+        landlordID:
+          type: "string"
+          format: "uuid"
+        name:
+          type: "string"
+        address:
+          type: "string"
+        city:
+          type: "string"
+        country:
+          type: "string"
+        zipCode:
+          type: "string"
+        rent:
+          type: "number"
+          format: "double"
+    Void:
+      type: "object"
+      properties: { }

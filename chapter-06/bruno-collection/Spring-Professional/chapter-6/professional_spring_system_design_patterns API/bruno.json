@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "professional_spring_system_design_patterns API",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
