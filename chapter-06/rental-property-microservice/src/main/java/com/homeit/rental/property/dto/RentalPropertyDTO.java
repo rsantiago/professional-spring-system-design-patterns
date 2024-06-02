@@ -6,26 +6,26 @@ import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
 
 public record RentalPropertyDTO(
-        UUID id,
+    UUID id,
 
-        @NotNull(message = "Landlord id is required")
-        UUID landlordID,
+    @NotNull(message = "Landlord id is required")
+    UUID landlordID,
 
-        @NotEmpty(message = "Name is required")
-        String name,
+    @NotEmpty(message = "Name is required")
+    String name,
 
-        @NotEmpty(message = "Address is required")
-        String address,
+    @NotEmpty(message = "Address is required")
+    String address,
 
-        @NotEmpty(message = "City is required")
-        String city,
+    @NotEmpty(message = "City is required")
+    String city,
 
-        @NotEmpty(message = "Country is required")
-        String country,
+    @NotEmpty(message = "Country is required")
+    String country,
 
-        @NotEmpty(message = "Zip code is required")
-        String zipCode,
+    @NotEmpty(message = "Zip code is required")
+    String zipCode,
 
-        @NotNull(message = "Rent is required")
-        Double rent
+    @NotNull(message = "Rent is required")
+    Double rent
 ) { }
