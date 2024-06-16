@@ -28,8 +28,10 @@ public class AddressConverter
     @Override
     public Address convertToEntityAttribute(String dbData) {
         try {
+            String originalJson = objectMapper.readValue(dbData, String.class);
+
             return objectMapper
-                .readValue(dbData, Address.class);
+                .readValue(originalJson, Address.class);
         } catch (IOException e) {
             throw new IllegalArgumentException
                 ("Error converting JSON string to Address", e);

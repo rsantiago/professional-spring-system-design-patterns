@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -15,9 +17,11 @@ import java.util.UUID;
 public class RentalPropertyServiceJdbcImpl implements RentalPropertyService{
 
     private final JdbcTemplate jdbcTemplate;
+    private RentalPropertyRowMapper rentalPropertyRowMapper;
 
-    public RentalPropertyServiceJdbcImpl(JdbcTemplate jdbcTemplate) {
+    public RentalPropertyServiceJdbcImpl(JdbcTemplate jdbcTemplate, RentalPropertyRowMapper rentalPropertyRowMapper) {
         this.jdbcTemplate = jdbcTemplate;
+        this.rentalPropertyRowMapper = rentalPropertyRowMapper;
     }
 
     @Override
@@ -57,18 +61,30 @@ public class RentalPropertyServiceJdbcImpl implements RentalPropertyService{
 
     @Override
     public List<RentalPropertyDTO> search(String name, String address, String city, String country, String zipCode) {
-        String sql = "SELECT * FROM rental_properties WHERE " +
-                "name LIKE ? AND " +
-                "address LIKE ? AND " +
-                "address->>'city' LIKE ? AND " +
-                "address->>'country' LIKE ? AND " +
-                "address->>'zip' LIKE ?";
+        StringBuilder sql = new StringBuilder("SELECT * FROM rental_properties WHERE 1=1");
+        List<Object> params = new ArrayList<>();
 
-        return jdbcTemplate.query(sql, new RentalPropertyRowMapper(),
-                "%" + name + "%",
-                "%" + address + "%",
-                "%" + city + "%",
-                "%" + country + "%",
-                "%" + zipCode + "%");
+        if (StringUtils.hasText(name)) {
+            sql.append(" AND name LIKE ?");
+            params.add("%" + name + "%");
+        }
+        if (StringUtils.hasText(address)) {
+            sql.append(" AND address LIKE ?");
+            params.add("%" + address + "%");
+        }
+        if (StringUtils.hasText(city)) {
+            sql.append(" AND address LIKE ?");
+            params.add("%" + city + "%");
+        }
+        if (StringUtils.hasText(country)) {
+            sql.append(" AND address LIKE ?");
+            params.add("%" + country + "%");
+        }
+        if (StringUtils.hasText(zipCode)) {
+            sql.append(" AND address LIKE ?");
+            params.add("%" + zipCode + "%");
+        }
+
+        return jdbcTemplate.query(sql.toString(),rentalPropertyRowMapper, params.toArray());
     }
 }
