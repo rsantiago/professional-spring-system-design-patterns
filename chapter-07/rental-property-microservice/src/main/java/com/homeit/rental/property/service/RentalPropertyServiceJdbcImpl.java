@@ -17,7 +17,7 @@ import java.util.UUID;
 public class RentalPropertyServiceJdbcImpl implements RentalPropertyService{
 
     private final JdbcTemplate jdbcTemplate;
-    private RentalPropertyRowMapper rentalPropertyRowMapper;
+    private final RentalPropertyRowMapper rentalPropertyRowMapper;
 
     public RentalPropertyServiceJdbcImpl(JdbcTemplate jdbcTemplate, RentalPropertyRowMapper rentalPropertyRowMapper) {
         this.jdbcTemplate = jdbcTemplate;

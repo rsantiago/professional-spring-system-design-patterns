@@ -27,6 +27,7 @@ public class SampleExceptionHandlerTest {
     private final WebApplicationContext context;
 
     @MockBean
+    @Qualifier("jpaRentalPropertyService")
     private RentalPropertyService rentalPropertyServiceMock;
 
     private final ObjectMapper objectMapper;

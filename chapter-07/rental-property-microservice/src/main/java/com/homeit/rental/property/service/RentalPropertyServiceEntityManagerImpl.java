@@ -4,6 +4,7 @@ import com.homeit.rental.property.dto.RentalPropertyDTO;
 import com.homeit.rental.property.dto.utils.RentalPropertyConverter;
 import com.homeit.rental.property.entities.RentalProperty;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,8 +21,11 @@ import java.util.UUID;
 @Qualifier("entityManagerRentalPropertyService")
 public class RentalPropertyServiceEntityManagerImpl implements RentalPropertyService{
 
-    @PersistenceContext
-    private EntityManager entityManager;
+    private EntityManagerFactory entityManagerFactory;
+
+    public RentalPropertyServiceEntityManagerImpl(EntityManagerFactory entityManagerFactory) {
+        this.entityManagerFactory = entityManagerFactory;
+    }
 
     @Override
     public List<RentalPropertyDTO> getAllProperties() {
@@ -55,6 +59,7 @@ public class RentalPropertyServiceEntityManagerImpl implements RentalPropertySer
 
     @Override
     public Optional<RentalPropertyDTO> delete(UUID id) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
         RentalPropertyDTO dto;
         try {
@@ -68,6 +73,8 @@ public class RentalPropertyServiceEntityManagerImpl implements RentalPropertySer
                 transaction.rollback();
             }
             throw e;
+        } finally {
+            entityManager.close();
         }
 
         return Optional.ofNullable(dto);

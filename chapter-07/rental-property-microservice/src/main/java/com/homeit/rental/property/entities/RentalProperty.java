@@ -32,7 +32,7 @@ public class RentalProperty {
 
     @Lob
     @Convert(converter = AddressConverter.class)
-    @Column(columnDefinition = "jsonb")
+    @Column(columnDefinition = "TEXT")
     private Address address;
 
     @NotNull(message = "Rent is required")

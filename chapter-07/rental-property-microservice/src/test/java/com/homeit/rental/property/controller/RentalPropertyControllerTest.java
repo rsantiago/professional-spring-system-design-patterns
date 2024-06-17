@@ -44,10 +44,13 @@ public class RentalPropertyControllerTest {
     @Test
     void testGetAllProperties() throws Exception {
         mockMvc.perform(
-            get("/api/v1/rental-properties")
+            get("/api/v1/rental-properties?page=1&size=2")
             .contentType("application/json"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0].name").exists());
+            .andExpect(jsonPath("$.pageable.pageNumber").value(1))
+            .andExpect(jsonPath("$.content[*].name").exists())
+            .andExpect(jsonPath("$.pageable.pageSize").value(2))
+        ;
     }
 
     @Test
@@ -58,13 +61,13 @@ public class RentalPropertyControllerTest {
                 .contentType("application/json"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.name")
-                .value("Test Property"));
+                .value("Test Property Chapter 7"));
     }
 
     private RentalPropertyDTO createProperty() throws Exception {
         RentalPropertyDTO property = new RentalPropertyDTO(
-        null, UUID.randomUUID(),"Test Property",
-        "123 Test St","Test City",
+        null, UUID.randomUUID(),"Test Property Chapter 7",
+        "123 Test St","Test City Chapter 7",
         "Test Country", "12345",1200.0);
 
         // Simulate creating a property
@@ -160,14 +163,14 @@ public class RentalPropertyControllerTest {
 
     @Test
     void testSearchProperties() throws Exception {
-        String searchCity = "Test City";
+        String searchCity = "ity";
 
         mockMvc.perform(
                 get("/api/v1/rental-properties/search")
                 .contentType("application/json")
                 .param("city", searchCity))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0].city").value("Test City"));
+            .andExpect(jsonPath("$[0].city").value("Test City Chapter 7"));
     }
 
     @Test
