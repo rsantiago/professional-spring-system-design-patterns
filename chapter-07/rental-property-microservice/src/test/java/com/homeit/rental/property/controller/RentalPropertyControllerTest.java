@@ -30,7 +30,6 @@ public class RentalPropertyControllerTest {
         this.objectMapper = objectMapper;
     }
 
-
     private RentalPropertyDTO createdProperty;
     private MockMvc mockMvc;
 
