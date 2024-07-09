@@ -1,0 +1,444 @@
+{
+  "name": "Spring-Professional",
+  "version": "1",
+  "items": [
+    {
+      "type": "folder",
+      "name": "auth-provider",
+      "items": [
+        {
+          "type": "http",
+          "name": "token create",
+          "seq": 1,
+          "request": {
+            "url": "http://localhost:8081/users/token",
+            "method": "POST",
+            "headers": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"grant_type\": \"password\",\n  \"username\": \"user@example.com\",\n  \"password\": \"userpass\",\n  \"client_id\": \"4ca8f880-0bee-4c24-88ce-3402fe7e37f0\",\n  \"client_secret\": \"b08cee2b-e79f-472b-a0b9-b210465c8bf3\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            },
+            "query": []
+          }
+        },
+        {
+          "type": "http",
+          "name": "user create",
+          "seq": 2,
+          "request": {
+            "url": "http://localhost:8081/users/register",
+            "method": "POST",
+            "headers": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"userpass\",\n  \"user_type\": \"tenant\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            },
+            "query": []
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "rental-properties",
+      "items": [
+        {
+          "type": "folder",
+          "name": "professional_spring_system_design_patterns API",
+          "items": [
+            {
+              "type": "http",
+              "name": "DELETE api-v1-rental-properties--id-",
+              "seq": 13,
+              "request": {
+                "url": "https://professional_spring_system_design_patterns/api/v1/rental-properties/{id}",
+                "method": "DELETE",
+                "headers": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "auth": {
+                  "mode": "none"
+                },
+                "query": []
+              }
+            },
+            {
+              "type": "http",
+              "name": "GET api-v1-rental-properties--id-",
+              "seq": 10,
+              "request": {
+                "url": "https://professional_spring_system_design_patterns/api/v1/rental-properties/{id}",
+                "method": "GET",
+                "headers": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "auth": {
+                  "mode": "none"
+                },
+                "query": []
+              }
+            },
+            {
+              "type": "http",
+              "name": "GET api-v1-rental-properties-error",
+              "seq": 6,
+              "request": {
+                "url": "https://professional_spring_system_design_patterns/api/v1/rental-properties/error",
+                "method": "GET",
+                "headers": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "auth": {
+                  "mode": "none"
+                },
+                "query": []
+              }
+            },
+            {
+              "type": "http",
+              "name": "GET api-v1-rental-properties-headers",
+              "seq": 7,
+              "request": {
+                "url": "https://professional_spring_system_design_patterns/api/v1/rental-properties/headers",
+                "method": "GET",
+                "headers": [
+                  {
+                    "name": "User-Agent",
+                    "value": "",
+                    "enabled": true
+                  }
+                ],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "auth": {
+                  "mode": "none"
+                },
+                "query": []
+              }
+            },
+            {
+              "type": "http",
+              "name": "GET api-v1-rental-properties-search",
+              "seq": 8,
+              "request": {
+                "url": "http://localhost:8080/api/v1/rental-properties/search",
+                "method": "GET",
+                "headers": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "auth": {
+                  "mode": "none"
+                },
+                "query": [
+                  {
+                    "name": "name",
+                    "value": "",
+                    "enabled": false
+                  },
+                  {
+                    "name": "address",
+                    "value": "",
+                    "enabled": false
+                  },
+                  {
+                    "name": "city",
+                    "value": "",
+                    "enabled": false
+                  },
+                  {
+                    "name": "country",
+                    "value": "",
+                    "enabled": false
+                  },
+                  {
+                    "name": "zipCode",
+                    "value": "",
+                    "enabled": false
+                  }
+                ]
+              }
+            },
+            {
+              "type": "http",
+              "name": "GET api-v1-rental-properties-single",
+              "seq": 2,
+              "request": {
+                "url": "http://localhost:8080/api/v1/rental-properties/61a3aaf5-5cd4-45b7-a5c2-2b3ab7fed680",
+                "method": "GET",
+                "headers": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "auth": {
+                  "mode": "none"
+                },
+                "query": []
+              }
+            },
+            {
+              "type": "http",
+              "name": "GET api-v1-rental-properties-thread-model",
+              "seq": 9,
+              "request": {
+                "url": "https://professional_spring_system_design_patterns/api/v1/rental-properties/thread-model",
+                "method": "GET",
+                "headers": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "auth": {
+                  "mode": "none"
+                },
+                "query": []
+              }
+            },
+            {
+              "type": "http",
+              "name": "GET api-v1-rental-properties",
+              "seq": 1,
+              "request": {
+                "url": "http://localhost:8080/api/v1/rental-properties",
+                "method": "GET",
+                "headers": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "auth": {
+                  "mode": "none"
+                },
+                "query": []
+              }
+            },
+            {
+              "type": "http",
+              "name": "GET api-v2-rental-properties-all",
+              "seq": 4,
+              "request": {
+                "url": "http://localhost:8080/api/v2/rental-properties",
+                "method": "GET",
+                "headers": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "auth": {
+                  "mode": "none"
+                },
+                "query": []
+              }
+            },
+            {
+              "type": "http",
+              "name": "GET api-v2-rental-properties-single",
+              "seq": 3,
+              "request": {
+                "url": "http://localhost:8080/api/v2/rental-properties/61a3aaf5-5cd4-45b7-a5c2-2b3ab7fed680",
+                "method": "GET",
+                "headers": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "auth": {
+                  "mode": "none"
+                },
+                "query": []
+              }
+            },
+            {
+              "type": "http",
+              "name": "PATCH api-v1-rental-properties--id-",
+              "seq": 12,
+              "request": {
+                "url": "https://professional_spring_system_design_patterns/api/v1/rental-properties/{id}",
+                "method": "PATCH",
+                "headers": [],
+                "body": {
+                  "mode": "json",
+                  "json": "",
+                  "formUrlEncoded": [],
+                  "multipartForm": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "auth": {
+                  "mode": "none"
+                },
+                "query": []
+              }
+            },
+            {
+              "type": "http",
+              "name": "POST api-v1-rental-properties",
+              "seq": 5,
+              "request": {
+                "url": "http://localhost:8080/api/v1/rental-properties",
+                "method": "POST",
+                "headers": [],
+                "body": {
+                  "mode": "json",
+                  "json": "{\n  \"id\" : null,\n  \"landlordID\" : \"6a1f992b-06f6-4583-b4a4-afc4ab21a3bd\",\n  \"name\" : \"rodrigo santiago\",\n  \"address\" : \"Example St 123\",\n  \"city\" : \"Strange City\",\n  \"country\" : \"US\",\n  \"zipCode\" : \"1111\",\n  \"rent\" : 133.33\n}",
+                  "formUrlEncoded": [],
+                  "multipartForm": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "auth": {
+                  "mode": "none"
+                },
+                "query": []
+              }
+            },
+            {
+              "type": "http",
+              "name": "PUT api-v1-rental-properties--id-",
+              "seq": 11,
+              "request": {
+                "url": "https://professional_spring_system_design_patterns/api/v1/rental-properties/{id}",
+                "method": "PUT",
+                "headers": [],
+                "body": {
+                  "mode": "json",
+                  "json": "",
+                  "formUrlEncoded": [],
+                  "multipartForm": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "auth": {
+                  "mode": "none"
+                },
+                "query": []
+              }
+            },
+            {
+              "type": "http",
+              "name": "create - POST api-v1-rental-properties",
+              "seq": 5,
+              "request": {
+                "url": "http://localhost:8080/api/v1/rental-properties",
+                "method": "POST",
+                "headers": [],
+                "body": {
+                  "mode": "json",
+                  "json": "{\n  \"id\" : null,\n  \"landlordID\" : \"6a1f992b-06f6-4583-b4a4-afc4ab21a3bd\",\n  \"name\" : \"rodrigo santiago 123\",\n  \"address\" : \"Example St 123 123\",\n  \"city\" : \"Strange City\",\n  \"country\" : \"US\",\n  \"zipCode\" : \"1111\",\n  \"rent\" : 133.33\n}",
+                  "formUrlEncoded": [],
+                  "multipartForm": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "auth": {
+                  "mode": "none"
+                },
+                "query": []
+              }
+            },
+            {
+              "type": "folder",
+              "name": "environments"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "environments": [],
+  "brunoConfig": {
+    "version": "1",
+    "name": "Spring-Professional",
+    "type": "collection",
+    "ignore": [
+      "node_modules",
+      ".git"
+    ]
+  }
+}
