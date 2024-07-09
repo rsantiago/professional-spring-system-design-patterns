@@ -1,0 +1,19 @@
+meta {
+  name: user create
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8081/users/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "user@example.com",
+    "password": "userpass",
+    "user_type": "tenant"
+  }
+}
