@@ -81,7 +81,11 @@ public class RentalPropertyServiceImpl
     }
 
     @Override
-    public Optional<RentalPropertyDTO> delete(UUID id) {
+    public Optional<RentalPropertyDTO> delete(UUID id, String authorizedUser) {
+        if(!rentalProperties.get(id).landlordID().toString().equals(authorizedUser)) {
+            return Optional.empty();
+        }
+
         return Optional.ofNullable(rentalProperties.remove(id));
     }
 

@@ -58,13 +58,18 @@ public class RentalPropertyServiceEntityManagerImpl implements RentalPropertySer
     }
 
     @Override
-    public Optional<RentalPropertyDTO> delete(UUID id) {
+    public Optional<RentalPropertyDTO> delete(UUID id, String userId) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
         RentalPropertyDTO dto;
         try {
             transaction.begin();
             RentalProperty property = entityManager.find(RentalProperty.class, id);
+            if(!property.getLandlordID().toString().equals(userId)) {
+                transaction.rollback();
+                return Optional.empty();
+            }
+
             dto = RentalPropertyConverter.toDTO(property);
             entityManager.remove(property);
             transaction.commit();

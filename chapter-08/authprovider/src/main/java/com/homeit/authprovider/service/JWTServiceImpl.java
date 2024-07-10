@@ -23,16 +23,15 @@ public class JWTServiceImpl implements JWTService{
     @Override
     public TokenResponse getJWTToken(TokenRequest tokenRequest, String scope, String userId) {
         try {
-            String subject = tokenRequest.username();
             KeyPair keyPair = loadRsaKey();
             RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
             PrivateKey privateKey = keyPair.getPrivate();
 
             Date issueTime = new Date();
-            Date expiry = new Date(System.currentTimeMillis() + 30000);
+            Date expiry = new Date(System.currentTimeMillis() + 3600000);
 
             JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
-                    .subject(subject)
+                    .subject(userId)
                     .issueTime(issueTime)
                     .claim("scope", scope)
                     .expirationTime(expiry) // 1 hour expiry
