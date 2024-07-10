@@ -9,9 +9,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.UUID;
 
@@ -95,9 +98,11 @@ public class RentalPropertyController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('SCOPE_rental_properties:write')")
-    public ResponseEntity<Void> deleteProperty(@PathVariable UUID id) {
+    public ResponseEntity<Void> deleteProperty(@PathVariable UUID id, Authentication authentication) throws ParseException {
+        Jwt jwt = (Jwt) authentication.getPrincipal();
+        String userId = jwt.getClaim("sub");
         return entityManagerRentalPropertyService
-            .delete(id)
+            .delete(id,userId)
             .map(opt ->
                 ResponseEntity.noContent()
                     .<Void>build())

@@ -57,7 +57,7 @@ public class RentalPropertyServiceJdbcImpl implements RentalPropertyService{
     }
 
     @Override
-    public Optional<RentalPropertyDTO> delete(UUID id) {
+    public Optional<RentalPropertyDTO> delete(UUID id, String userID) {
         throw new UnsupportedOperationException("Not implemented, please use the RentalPropertyJpaImpl bean");
     }
 
