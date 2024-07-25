@@ -1,0 +1,21 @@
+meta {
+  name: token create
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:8081/users/token
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "grant_type": "password",
+    "username": "user3@example.com",
+    "password": "userpass",
+    "client_id": "4ca8f880-0bee-4c24-88ce-3402fe7e37f0",
+    "client_secret": "b08cee2b-e79f-472b-a0b9-b210465c8bf3"
+  }
+}
