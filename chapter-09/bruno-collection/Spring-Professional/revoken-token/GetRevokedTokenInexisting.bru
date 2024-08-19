@@ -1,0 +1,19 @@
+meta {
+  name: GetRevokedTokenInexisting
+  type: http
+  seq: 3
+}
+
+get {
+  url: http://localhost:8082/api/revoke-tokens?token=myToken1232432
+  body: none
+  auth: none
+}
+
+query {
+  token: myToken1232432
+}
+
+headers {
+  Authorization: Basic bXlBcHBJZDpteVNlY3JldA==
+}

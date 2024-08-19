@@ -1,0 +1,3 @@
+CREATE TABLE revoked_tokens (
+    REVOKED VARCHAR(1024) PRIMARY KEY
+);
