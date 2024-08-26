@@ -1,6 +1,6 @@
 package com.homeit.rental.property.configuration;
 
-import com.homeit.rental.property.tokenclients.RestTemplateRevokeTokenService;
+import com.homeit.rental.property.tokenclients.RestTemplateRevokedTokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,9 +12,9 @@ import java.io.IOException;
 
 public class TokenRevocationFilter extends OncePerRequestFilter {
 
-    private final RestTemplateRevokeTokenService revokeTokenService;
+    private final RestTemplateRevokedTokenService revokeTokenService;
 
-    public TokenRevocationFilter(RestTemplateRevokeTokenService revokeTokenService) {
+    public TokenRevocationFilter(RestTemplateRevokedTokenService revokeTokenService) {
         this.revokeTokenService = revokeTokenService;
     }
 

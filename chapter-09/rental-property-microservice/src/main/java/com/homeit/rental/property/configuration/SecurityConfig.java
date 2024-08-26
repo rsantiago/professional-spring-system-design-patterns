@@ -1,6 +1,6 @@
 package com.homeit.rental.property.configuration;
 
-import com.homeit.rental.property.tokenclients.RestTemplateRevokeTokenService;
+import com.homeit.rental.property.tokenclients.RestTemplateRevokedTokenService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -17,10 +17,10 @@ import org.springframework.security.web.DefaultSecurityFilterChain;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private final RestTemplateRevokeTokenService restTemplateRevokeTokenService;
+    private final RestTemplateRevokedTokenService restTemplateRevokedTokenService;
 
-    public SecurityConfig(RestTemplateRevokeTokenService revokeTokenService) {
-        this.restTemplateRevokeTokenService = revokeTokenService;
+    public SecurityConfig(RestTemplateRevokedTokenService revokeTokenService) {
+        this.restTemplateRevokedTokenService = revokeTokenService;
     }
 
     @Bean
@@ -32,7 +32,7 @@ public class SecurityConfig {
         .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
         .oauth2ResourceServer(oauth2 -> oauth2
             .jwt(jwt -> jwt.jwtAuthenticationConverter(new JwtAuthenticationConverter())))
-        .addFilterBefore(new TokenRevocationFilter(restTemplateRevokeTokenService),BearerTokenAuthenticationFilter.class )
+        .addFilterBefore(new TokenRevocationFilter(restTemplateRevokedTokenService),BearerTokenAuthenticationFilter.class )
         .build();
     }
 }

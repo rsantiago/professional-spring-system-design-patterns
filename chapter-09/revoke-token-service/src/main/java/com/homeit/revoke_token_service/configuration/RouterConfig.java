@@ -14,7 +14,6 @@ public class RouterConfig {
 
     @Bean
     public RouterFunction<ServerResponse> route(RevokeTokenHandler handler) {
-
         return RouterFunctions
             .route(RequestPredicates.POST("/api/revoke-tokens"), handler::revokeToken)
             .andRoute(RequestPredicates.GET("/api/revoke-tokens"), handler::isTokenRevoked);

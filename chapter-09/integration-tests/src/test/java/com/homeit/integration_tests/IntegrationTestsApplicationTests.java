@@ -15,48 +15,77 @@ class IntegrationTestsApplicationTests {
 
 	@Test
 	void endToEndFlow() {
+		CreatedUser createdLandlord = createUserAndToken("landlord");
+		CreatedUser createdTenant = createUserAndToken("tenant");
+		CreatedProperty createdProperty = landlordCreatesProperty(createdLandlord);
+
+		tenantRetrievesProperty(createdProperty.createdPropertyResponse(), createdTenant.userTokenResponse());
+		tenantFailsAtCreatingProperty(createdTenant);
+		verifyLandlordTokenIsNotRevoked(createdLandlord.userAccessToken());
+		revokeLandlordToken(createdLandlord.userAccessToken());
+		landlordFailsAtCreatingProperty(createdLandlord.userId(), createdLandlord.userAccessToken());
+	}
+
+	private CreatedUser createUserAndToken(String userType) {
 		// First request to localhost:8081
 		RestAssured.baseURI = "http://localhost/users";
 		RestAssured.port = 8081;
+		System.out.println("======================== CREATES USER OF TYPE: " + userType);
+		ExtractableResponse<Response> createdUserResponse = createUser(userType);
+        ExtractableResponse<Response> userTokenResponse = createToken(createdUserResponse.path("email"));
+        return new CreatedUser(createdUserResponse, userTokenResponse);
+	}
 
-		System.out.println("======================== CREATES LANDLORD USER");
-		ExtractableResponse<Response> landlordUserResponse = createUser("landlord");
-		String landlordEmail = landlordUserResponse.path("email");
-		String landlordId = landlordUserResponse.path("id");
-		ExtractableResponse<Response> landlordTokenResponse = createToken(landlordEmail);
+	private record CreatedUser(ExtractableResponse<Response> userIdResponse, ExtractableResponse<Response> userTokenResponse) {
+		String userAccessToken() {
+			return userTokenResponse.path("access_token");
+		}
+		String userId() {
+			return userIdResponse.path("id");
+		}
+	}
 
-		System.out.println("======================== CREATES TENANT USER");
-		ExtractableResponse<Response> tenantUserResponse = createUser("tenant");
-		String tenantEmail = tenantUserResponse.path("email");
-		ExtractableResponse<Response> tenantTokenResponse = createToken(tenantEmail);
-
+	private CreatedProperty landlordCreatesProperty(CreatedUser createdLandlord) {
 		System.out.println("======================== LANDLORD CREATES PROPERTY");
 		RestAssured.baseURI = "http://localhost/";
 		RestAssured.port = 8080;
-		String landlordToken = landlordTokenResponse.path("access_token");
-		ExtractableResponse<Response> createdProperty = createProperty("John Doe Landlord", landlordId, landlordToken);
+		ExtractableResponse<Response> createdProperty = createProperty("John Doe Landlord", createdLandlord.userId(),createdLandlord.userAccessToken());
+        return new CreatedProperty(createdProperty);
+	}
 
+	private record CreatedProperty(ExtractableResponse<Response> createdPropertyResponse) {
+	}
+
+
+	private void tenantRetrievesProperty(ExtractableResponse<Response> createdProperty, ExtractableResponse<Response> tenantTokenResponse) {
 		System.out.println("======================== TENANT RETRIEVES PROPERTY");
 		ExtractableResponse<Response> retrievedProperty = getProperty(createdProperty.path("id"), tenantTokenResponse.path("access_token"));
+	}
 
+	private void tenantFailsAtCreatingProperty(CreatedUser createdTenant) {
 		System.out.println("======================== TENANT FAILS AT CREATING PROPERTY");
-		failsWhenCreatingProperty("John Doe Landlord", tenantUserResponse.path("id"), tenantTokenResponse.path("access_token"));
+		failsWhenCreatingProperty("John Doe Landlord", createdTenant.userId(), createdTenant.userAccessToken());
+	}
 
+	private void verifyLandlordTokenIsNotRevoked(String landlordToken) {
 		System.out.println("======================== ENSURES LANDLORD TOKEN IS NOT REVOKED");
 		RestAssured.baseURI = "http://localhost/";
 		RestAssured.port = 8082;
 		nonRevokedToken(landlordToken);
+	}
 
+	private void revokeLandlordToken(String landlordToken) {
 		System.out.println("======================== REVOKE LANDLORD TOKEN");
 		RestAssured.baseURI = "http://localhost/";
 		RestAssured.port = 8082;
 		ExtractableResponse<Response> revokedTokenResponse = revokeToken(landlordToken);
+	}
 
+	private void landlordFailsAtCreatingProperty(String landlordId, String landlordToken) {
 		System.out.println("======================== LANDLORD FAILS AT CREATING PROPERTY");
 		RestAssured.baseURI = "http://localhost/";
 		RestAssured.port = 8080;
 		failsWhenCreatingProperty("John Doe Landlord", landlordId, landlordToken);
-
 	}
 
 
@@ -183,10 +212,10 @@ class IntegrationTestsApplicationTests {
 				"client_secret", "b08cee2b-e79f-472b-a0b9-b210465c8bf3");
 	}
 
-private static Map<String, String> userPayload(String userType) {
-	return Map.of("email", new Date().getTime() + "_user@example.com",
-				"password", "userpass",
-				"user_type", userType);
+	private static Map<String, String> userPayload(String userType) {
+		return Map.of("email", new Date().getTime() + "_user@example.com",
+			"password", "userpass",
+			"user_type", userType);
 	}
 
 }

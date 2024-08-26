@@ -10,11 +10,11 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Objects;
 
 @Service
-public class RestTemplateRevokeTokenService {
+public class RestTemplateRevokedTokenService {
 
     private final RestTemplate restTemplate;
 
-    public RestTemplateRevokeTokenService(RestTemplate restTemplate) {
+    public RestTemplateRevokedTokenService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
