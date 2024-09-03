@@ -1,0 +1,28 @@
+meta {
+  name: create - POST api-v1-rental-properties
+  type: http
+  seq: 5
+}
+
+post {
+  url: http://localhost:8080/api/v1/rental-properties
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer eyJraWQiOiJmYWIzOGFhNi1kMDViLTRhYjgtYjA0NS04MzYyYjkwYWNmZGYiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJkOTliNDAyOC03YTg3LTRlNmMtODgyMC0zZWYyMThhMDk1N2YiLCJleHAiOjE3MjA1OTc0MTcsImlhdCI6MTcyMDU5MzgxNywic2NvcGUiOiJyZW50YWxfcHJvcGVydGllczpyZWFkIHJlbnRhbF9wcm9wZXJ0aWVzOndyaXRlIn0.QhRqnezlJ69DdPRJAQDLe20DgFM9Iar_247NLHmfnpezfvz0IoYB21oqK4tcOilGPFTMVacrBI2ebyBfplKH-96rCrrYVn30qsXlev2wUkqVhTIPIQC01R61pbKox-6pltuqvQ5Nbp6SfRHG_uozm6i3j71us3UiFsGlsvOobF06c96LIXDl1lZXtf5RKA44po0s6LwVOGOWaU7Aq1gz7ZAtqw0TsiCh3XD23BnjNTFIB3Ha-jsZsIVA96NNSXQS_gm2LzJ1gc-dtqP4AzmuKY0MgdNItFcD3Rl8X_SrJBpTAVjVPqA2OD5jlE_h6hfqUmReeJhrFtjaeTxY-eS54g
+}
+
+body:json {
+  {
+    "id" : null,
+    "landlordID" : "d99b4028-7a87-4e6c-8820-3ef218a0957f",
+    "name" : "rodrigo santiago 123",
+    "address" : "Example St 123 123",
+    "city" : "Strange City",
+    "country" : "US",
+    "zipCode" : "1111",
+    "rent" : 133.33
+  }
+}
