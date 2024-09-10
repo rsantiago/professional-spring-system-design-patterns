@@ -1,0 +1,20 @@
+meta {
+  name: create proposals
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:8080/proposals
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "id": "test2", 
+    "tenantId": "tenantid2", 
+    "landlordId": "landlordid2",
+    "propertyId": "propertyid2"
+  }
+}

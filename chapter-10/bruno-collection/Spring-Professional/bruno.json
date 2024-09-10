@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "Spring-Professional",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
