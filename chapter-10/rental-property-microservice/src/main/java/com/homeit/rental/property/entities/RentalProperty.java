@@ -39,6 +39,8 @@ public class RentalProperty {
     @Column(nullable = false)
     private Double rent;
 
+    private Integer score = 0;
+
     @PrePersist
     protected void onCreate() {
         if (id == null) {

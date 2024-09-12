@@ -39,7 +39,7 @@ public class RentalProposalServiceImpl implements RentalProposalService {
             newRentalProposal.landlordId(),
             newRentalProposal.propertyId(),
             rounds,
-            RentalProposalStates.OPENED.toString()))
+            RentalProposalStates.OPEN.toString()))
             .flatMap( proposal ->
                 Mono.fromFuture(
                     kafkaTemplate.send("proposal-topic",

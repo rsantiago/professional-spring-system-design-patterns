@@ -39,7 +39,7 @@ public class RentalPropertyServiceImpl
                         id, property.landlordID(),
                         property.name(), property.address(),
                         property.city(), property.country(),
-                        property.zipCode(), property.rent());
+                        property.zipCode(), 0, property.rent());
 
         rentalProperties.put(id, newProperty);
 
@@ -61,6 +61,7 @@ public class RentalPropertyServiceImpl
                         updatedProperty.city(),
                         updatedProperty.country(),
                         updatedProperty.zipCode(),
+                        updatedProperty.score(),
                         updatedProperty.rent())));
     }
 
@@ -74,9 +75,10 @@ public class RentalPropertyServiceImpl
             String newCity = partialUpdate.city() != null ? partialUpdate.city() : existingProperty.city();
             String newCountry = partialUpdate.country() != null ? partialUpdate.country() : existingProperty.country();
             String newZipCode = partialUpdate.zipCode() != null ? partialUpdate.zipCode() : existingProperty.zipCode();
+            Integer newScore = partialUpdate.score() != null ? partialUpdate.score() : existingProperty.score();
             Double newRent = partialUpdate.rent() != null ? partialUpdate.rent() : existingProperty.rent();
 
-            return new RentalPropertyDTO(existingProperty.id(), landlordId, newName, newAddress, newCity, newCountry, newZipCode, newRent);
+            return new RentalPropertyDTO(existingProperty.id(), landlordId, newName, newAddress, newCity, newCountry, newZipCode, newScore, newRent);
         }));
     }
 

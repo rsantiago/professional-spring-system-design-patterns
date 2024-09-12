@@ -5,16 +5,16 @@ meta {
 }
 
 post {
-  url: http://localhost:8080/proposals/92fd6bb3-5ee6-4abe-aa6a-219faec0e5e1/rounds
+  url: http://localhost:8084/proposals/92fd6bb3-5ee6-4abe-aa6a-219faec0e5e1/rounds
   body: json
   auth: none
 }
 
 body:json {
   {
-    "status": "REJECTED", // OFFER, COUNTER_OFFER, APPROVED, REJECTED, CANCELLED
+    "status": "APPROVED", // OFFER, COUNTER_OFFER, APPROVED, REJECTED, CANCELLED
     "authorId": "authorid",
-    "value": null,
-    "message": "no?"
+    "value": 20000,
+    "message": "sure!"
   }
 }

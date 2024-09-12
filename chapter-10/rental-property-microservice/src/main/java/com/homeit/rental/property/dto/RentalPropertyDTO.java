@@ -28,6 +28,8 @@ public record RentalPropertyDTO(
     @NotEmpty(message = "Zip code is required")
     String zipCode,
 
+    Integer score,
+
     @NotNull(message = "Rent is required")
     Double rent
 ) { }

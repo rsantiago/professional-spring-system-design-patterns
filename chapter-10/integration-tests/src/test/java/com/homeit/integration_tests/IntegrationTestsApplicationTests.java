@@ -6,6 +6,7 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import static io.restassured.RestAssured.*;
@@ -24,6 +25,76 @@ class IntegrationTestsApplicationTests {
 		verifyLandlordTokenIsNotRevoked(createdLandlord.userAccessToken());
 		revokeLandlordToken(createdLandlord.userAccessToken());
 		landlordFailsAtCreatingProperty(createdLandlord.userId(), createdLandlord.userAccessToken());
+
+		tenantRetrievesProperty(createdProperty.createdPropertyResponse(), createdTenant.userTokenResponse());
+		tenantRetrievesProperty(createdProperty.createdPropertyResponse(), createdTenant.userTokenResponse());
+		tenantRetrievesProperty(createdProperty.createdPropertyResponse(), createdTenant.userTokenResponse());
+		tenantRetrievesProperty(createdProperty.createdPropertyResponse(), createdTenant.userTokenResponse());
+
+		scoreIs(0, createdProperty, createdTenant);
+		scoreIs(0, createdProperty, createdTenant);
+		scoreIs(0, createdProperty, createdTenant);
+
+		CreatedProposal proposal = tenantCreatesProposal(createdTenant, createdLandlord, createdProperty);
+
+		tenantMakesFirstOffer(createdProperty, createdTenant, proposal);
+
+		tenantRetrievesProperty(createdProperty.createdPropertyResponse(), createdTenant.userTokenResponse());
+		scoreIs(2, createdProperty, createdTenant);
+
+		landlordRejectsOffer(createdProperty, createdLandlord, proposal);
+		tenantMakesCounterOffer(createdTenant, createdProperty, proposal);
+		landlordMakesCounterOffer(createdLandlord, createdProperty, proposal);
+		scoreIs(5, createdProperty, createdTenant);
+
+		tenantAcceptsOffer(createdTenant, createdProperty, proposal);
+		scoreIs(6, createdProperty, createdTenant);
+
+	}
+
+	private void tenantAcceptsOffer(CreatedUser createdTenant, CreatedProperty createdProperty, CreatedProposal proposal) {
+		addRound(createdTenant, createdProperty, "APPROVED", proposal, 1500D, "Ok, we have a deal!");
+	}
+
+	private void tenantMakesFirstOffer(CreatedProperty createdProperty, CreatedUser tenant, CreatedProposal proposal) {
+		addRound(tenant, createdProperty, "OFFER", proposal, 1500D, "Can you accept this offer for renting your property?");
+	}
+
+	private void landlordMakesCounterOffer(CreatedUser createdLandlord, CreatedProperty createdProperty, CreatedProposal proposal) {
+		addRound(createdLandlord, createdProperty, "COUNTER_OFFER", proposal, 1500D, "I can accept this.");
+	}
+
+	private void tenantMakesCounterOffer(CreatedUser tenant, CreatedProperty property, CreatedProposal proposal) {
+		addRound(tenant, property, "COUNTER_OFFER", proposal, 1200D, "Can you accept this one?");
+	}
+
+	private void landlordRejectsOffer(CreatedProperty createdProperty, CreatedUser createdLandlord, CreatedProposal proposal) {
+		addRound(createdLandlord, createdProperty, "REJECTED", proposal, null, "I don't want this offer" );
+	}
+
+	private CreatedProposal tenantCreatesProposal(CreatedUser createdTenant, CreatedUser createdLandlord, CreatedProperty createdProperty) {
+		RestAssured.baseURI = "http://localhost/";
+		RestAssured.port = 8084;
+		System.out.println("======================== TENANT CREATES OFFER: " + createdTenant.userIdResponse.path("email"));
+		ExtractableResponse<Response> proposalResponse = createProposal(createdTenant, createdLandlord, createdProperty);
+		return new CreatedProposal(proposalResponse);
+	}
+
+	private void addRound(CreatedUser author, CreatedProperty createdProperty, String status, CreatedProposal proposal, Double value, String message) {
+		RestAssured.baseURI = "http://localhost/";
+		RestAssured.port = 8084;
+//		String tenantBodyResponse = createdTenant.userIdResponse.body().asPrettyString();
+		System.out.println("======================== SOMEONE CREATES ROUND: " + author.userIdResponse.path("email"));
+		System.out.println("ROLE: " + author.userIdResponse.path("user_type"));
+
+		ExtractableResponse<Response> proposalResponse = addRoundRequest(status, proposal, author, value, message);
+		String proposalResponseBody = proposalResponse.body().asPrettyString();
+		System.out.print(proposalResponseBody);
+
+//		ExtractableResponse<Response> createdUserResponse = createUser(userType);
+//		ExtractableResponse<Response> userTokenResponse = createToken(createdUserResponse.path("email"));
+//		return new CreatedUser(createdUserResponse, userTokenResponse);
+
 	}
 
 	private CreatedUser createUserAndToken(String userType) {
@@ -45,6 +116,9 @@ class IntegrationTestsApplicationTests {
 		}
 	}
 
+	private record CreatedProposal(ExtractableResponse<Response> proposalResponse) {
+	}
+
 	private CreatedProperty landlordCreatesProperty(CreatedUser createdLandlord) {
 		System.out.println("======================== LANDLORD CREATES PROPERTY");
 		RestAssured.baseURI = "http://localhost/";
@@ -58,6 +132,8 @@ class IntegrationTestsApplicationTests {
 
 
 	private void tenantRetrievesProperty(ExtractableResponse<Response> createdProperty, ExtractableResponse<Response> tenantTokenResponse) {
+		RestAssured.baseURI = "http://localhost/";
+		RestAssured.port = 8080;
 		System.out.println("======================== TENANT RETRIEVES PROPERTY");
 		ExtractableResponse<Response> retrievedProperty = getProperty(createdProperty.path("id"), tenantTokenResponse.path("access_token"));
 	}
@@ -88,6 +164,16 @@ class IntegrationTestsApplicationTests {
 		failsWhenCreatingProperty("John Doe Landlord", landlordId, landlordToken);
 	}
 
+	private void scoreIs(Integer expectedScore, CreatedProperty createdProperty, CreatedUser createdTenant) {
+		RestAssured.baseURI = "http://localhost/";
+		RestAssured.port = 8080;
+		System.out.println("======================== TENANT CHECKS PROPERTY SCORE");
+		ExtractableResponse<Response> retrievedProperty = getProperty(createdProperty.createdPropertyResponse.path("id"), createdTenant.userAccessToken());
+		Integer score = retrievedProperty.path("score");
+		System.out.print("score = " + score);
+		assert Integer.valueOf(score).equals(expectedScore);
+	}
+
 
 	private ExtractableResponse<Response> createUser(String userType) {
 		return given()
@@ -101,6 +187,42 @@ class IntegrationTestsApplicationTests {
 				.body("id", notNullValue())
 				.body("email", endsWith("user@example.com"))
 				.body("user_type", equalTo(userType))
+				.extract();
+	}
+
+	private ExtractableResponse<Response> createProposal(CreatedUser tenant, CreatedUser landlord, CreatedProperty property) {
+		return given()
+				.contentType("application/json")
+				.body(proposalPayload(tenant, landlord, property)).
+				when()
+				.log().all()
+				.post("/proposals").
+				then()
+				.log().all()
+				.body("id", notNullValue())
+				.body("tenantId", equalTo(tenant.userIdResponse().path("id")))
+				.body("landlordId", equalTo(landlord.userIdResponse().path("id")))
+				.body("propertyId", equalTo(property.createdPropertyResponse().path("id")))
+				.body("status", equalTo("OPEN"))
+				.body("rounds", hasSize(1))
+				.extract();
+	}
+
+	private ExtractableResponse<Response> addRoundRequest(String status, CreatedProposal proposal, CreatedUser author, Double value, String message) {
+		return given()
+				.contentType("application/json")
+				.body(roundPayload(status,author, value, message)).
+				when()
+				.log().all()
+				.post("/proposals/" + proposal.proposalResponse().path("id") + "/rounds").
+				then()
+				.log().all()
+				.body("id", notNullValue())
+//				.body("tenantId", equalTo(tenant.userIdResponse().path("id")))
+//				.body("landlordId", equalTo(landlord.userIdResponse().path("id")))
+//				.body("propertyId", equalTo(property.createdPropertyResponse().path("id")))
+//				.body("status", equalTo("OPEN"))
+//				.body("rounds", hasSize(1))
 				.extract();
 	}
 
@@ -184,6 +306,7 @@ class IntegrationTestsApplicationTests {
 				.get("/api/v1/rental-properties/" + propertyId).
 				then()
 				.log().all()
+				.statusCode(200)
 				.body("landlordID", notNullValue())
 				.body("name", equalTo("John Doe Landlord"))
 				.body("address", equalTo("Example st 123"))
@@ -216,6 +339,22 @@ class IntegrationTestsApplicationTests {
 		return Map.of("email", new Date().getTime() + "_user@example.com",
 			"password", "userpass",
 			"user_type", userType);
+	}
+
+	private static Map<String, String> proposalPayload(CreatedUser tenant, CreatedUser landlord, CreatedProperty property) {
+		return Map.of("tenantId", tenant.userIdResponse.path("id"),
+			"landlordId", landlord.userIdResponse.path("id"),
+			"propertyId", property.createdPropertyResponse.path( "id"));
+	}
+
+	private static Map<String, Object> roundPayload(String status, CreatedUser author, Double value, String message) {
+        HashMap<String, Object> map = new HashMap<>(Map.of("status", status,
+                "authorId", author.userIdResponse.path("id"),
+                "message", message));
+		if(value != null) {
+			map.put("value", value);
+		}
+		return map;
 	}
 
 }

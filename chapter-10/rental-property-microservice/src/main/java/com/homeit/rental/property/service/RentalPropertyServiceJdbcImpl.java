@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Service
 @Qualifier("jdbcRentalPropertyService")
-public class RentalPropertyServiceJdbcImpl implements RentalPropertyService{
+public class RentalPropertyServiceJdbcImpl implements RentalPropertyService, ScoreService{
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private final RentalPropertyRowMapper rentalPropertyRowMapper;
@@ -88,5 +88,21 @@ public class RentalPropertyServiceJdbcImpl implements RentalPropertyService{
         }
 
         return jdbcTemplate.query(sql.toString(), params, rentalPropertyRowMapper);
+    }
+
+    @Override
+    public void addScore(UUID propertyId) {
+        StringBuilder sql = new StringBuilder("UPDATE rental_properties SET score = score + 1 WHERE id=:propertyId");
+
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("propertyId", propertyId);
+
+        int rowsAffected = jdbcTemplate.update(sql.toString(), params);
+
+        if (rowsAffected > 0) {
+            System.out.println("Score updated successfully for property: " + propertyId);
+        } else {
+            System.out.println("No property found with ID: " + propertyId);
+        }
     }
 }

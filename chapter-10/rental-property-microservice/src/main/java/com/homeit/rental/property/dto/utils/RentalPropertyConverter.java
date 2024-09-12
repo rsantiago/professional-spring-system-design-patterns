@@ -17,6 +17,7 @@ public class RentalPropertyConverter {
                 .streetAddress(dto.address())
                 .country(dto.country())
                 .build())
+            .score(0)
             .build();
     }
 
@@ -29,6 +30,7 @@ public class RentalPropertyConverter {
             .landlordID(entity.getLandlordID())
             .id(entity.getId())
             .country(entity.getAddress().country())
+            .score(entity.getScore())
             .zipCode(entity.getAddress().zip())
             .build();
     }

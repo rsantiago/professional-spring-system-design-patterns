@@ -49,7 +49,11 @@ public class RentalPropertyServiceJpaImpl implements RentalPropertyService{
     @Override
     public Optional<RentalPropertyDTO> get(UUID id) {
         return jpaRepository.findById(id)
-            .map(RentalPropertyConverter::toDTO);
+            .map(RentalPropertyConverter::toDTO)
+            .or( () -> {
+                System.out.print("not found");
+                return Optional.empty();
+            });
     }
 
     @Override
@@ -85,6 +89,7 @@ public class RentalPropertyServiceJpaImpl implements RentalPropertyService{
                         .city(nullOrEmpty(partialUpdate.city())? original.city() : partialUpdate.city())
                         .landlordID(nullOrEmpty(partialUpdate.landlordID())? original.landlordID() : partialUpdate.landlordID())
                         .country((nullOrEmpty(partialUpdate.country())? original.country() : partialUpdate.country()))
+                        .score((nullOrEmpty(partialUpdate.score())? original.score() : partialUpdate.score()))
                         .zipCode((nullOrEmpty(partialUpdate.zipCode())? original.zipCode() : partialUpdate.zipCode()))
                     .build())
             .map(RentalPropertyConverter::toEntity)

@@ -27,6 +27,10 @@ dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
+	implementation 'org.springframework.kafka:spring-kafka'
+	implementation 'com.fasterxml.jackson.core:jackson-databind'
+
+
 	// in memory database, for testing only
 	implementation 'com.h2database:h2'
 
