@@ -1,0 +1,20 @@
+meta {
+  name: add round
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:8084/proposals/92fd6bb3-5ee6-4abe-aa6a-219faec0e5e1/rounds
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "status": "APPROVED", // OFFER, COUNTER_OFFER, APPROVED, REJECTED, CANCELLED
+    "authorId": "authorid",
+    "value": 20000,
+    "message": "sure!"
+  }
+}
