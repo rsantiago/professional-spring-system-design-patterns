@@ -11,6 +11,13 @@ java {
 	sourceCompatibility = '21'
 }
 
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:2023.0.3"
+	}
+}
+
+
 repositories {
 	mavenCentral()
 }
@@ -29,6 +36,9 @@ dependencies {
 
 	implementation 'org.springframework.kafka:spring-kafka'
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
+
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+	implementation 'org.springframework.cloud:spring-cloud-starter-config'
 
 
 	// in memory database, for testing only

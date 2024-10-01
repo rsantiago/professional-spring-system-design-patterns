@@ -1,10 +1,10 @@
-package com.homeit.authprovider;
+package com.homeit.eureka_server;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-//@SpringBootTest
-class AuthproviderApplicationTests {
+@SpringBootTest
+class EurekaServerApplicationTests {
 
 	@Test
 	void contextLoads() {
