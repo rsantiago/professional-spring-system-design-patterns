@@ -96,7 +96,7 @@ cd ~/kafka/<your-kafka-extracted-directory>
 ```
 
 - Kafka: 
-````
+```
 cd ~/kafka/<your-kafka-extracted-directory>
 ./bin/kafka-server-start.sh config/server.properties 
 ```

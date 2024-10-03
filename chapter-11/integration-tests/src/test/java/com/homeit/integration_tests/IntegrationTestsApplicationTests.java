@@ -74,7 +74,7 @@ class IntegrationTestsApplicationTests {
 
 	private CreatedProposal tenantCreatesProposal(CreatedUser createdTenant, CreatedUser createdLandlord, CreatedProperty createdProperty) {
 		RestAssured.baseURI = "http://localhost/";
-		RestAssured.port = 8084;
+		RestAssured.port = 8080;
 		System.out.println("======================== TENANT CREATES OFFER: " + createdTenant.userIdResponse.path("email"));
 		ExtractableResponse<Response> proposalResponse = createProposal(createdTenant, createdLandlord, createdProperty);
 		return new CreatedProposal(proposalResponse);
@@ -82,7 +82,7 @@ class IntegrationTestsApplicationTests {
 
 	private void addRound(CreatedUser author, CreatedProperty createdProperty, String status, CreatedProposal proposal, Double value, String message) {
 		RestAssured.baseURI = "http://localhost/";
-		RestAssured.port = 8084;
+		RestAssured.port = 8080;
 //		String tenantBodyResponse = createdTenant.userIdResponse.body().asPrettyString();
 		System.out.println("======================== SOMEONE CREATES ROUND: " + author.userIdResponse.path("email"));
 		System.out.println("ROLE: " + author.userIdResponse.path("user_type"));
@@ -99,8 +99,8 @@ class IntegrationTestsApplicationTests {
 
 	private CreatedUser createUserAndToken(String userType) {
 		// First request to localhost:8081
-		RestAssured.baseURI = "http://localhost/users";
-		RestAssured.port = 8081;
+		RestAssured.baseURI = "http://localhost/auth/users";
+		RestAssured.port = 8080;
 		System.out.println("======================== CREATES USER OF TYPE: " + userType);
 		ExtractableResponse<Response> createdUserResponse = createUser(userType);
         ExtractableResponse<Response> userTokenResponse = createToken(createdUserResponse.path("email"));
@@ -121,7 +121,7 @@ class IntegrationTestsApplicationTests {
 
 	private CreatedProperty landlordCreatesProperty(CreatedUser createdLandlord) {
 		System.out.println("======================== LANDLORD CREATES PROPERTY");
-		RestAssured.baseURI = "http://localhost/";
+		RestAssured.baseURI = "http://localhost/properties/";
 		RestAssured.port = 8080;
 		ExtractableResponse<Response> createdProperty = createProperty("John Doe Landlord", createdLandlord.userId(),createdLandlord.userAccessToken());
         return new CreatedProperty(createdProperty);
@@ -132,7 +132,7 @@ class IntegrationTestsApplicationTests {
 
 
 	private void tenantRetrievesProperty(ExtractableResponse<Response> createdProperty, ExtractableResponse<Response> tenantTokenResponse) {
-		RestAssured.baseURI = "http://localhost/";
+		RestAssured.baseURI = "http://localhost/properties/";
 		RestAssured.port = 8080;
 		System.out.println("======================== TENANT RETRIEVES PROPERTY");
 		ExtractableResponse<Response> retrievedProperty = getProperty(createdProperty.path("id"), tenantTokenResponse.path("access_token"));
@@ -145,27 +145,27 @@ class IntegrationTestsApplicationTests {
 
 	private void verifyLandlordTokenIsNotRevoked(String landlordToken) {
 		System.out.println("======================== ENSURES LANDLORD TOKEN IS NOT REVOKED");
-		RestAssured.baseURI = "http://localhost/";
-		RestAssured.port = 8082;
+		RestAssured.baseURI = "http://localhost/revoke/";
+		RestAssured.port = 8080;
 		nonRevokedToken(landlordToken);
 	}
 
 	private void revokeLandlordToken(String landlordToken) {
 		System.out.println("======================== REVOKE LANDLORD TOKEN");
-		RestAssured.baseURI = "http://localhost/";
-		RestAssured.port = 8082;
+		RestAssured.baseURI = "http://localhost/revoke/";
+		RestAssured.port = 8080;
 		ExtractableResponse<Response> revokedTokenResponse = revokeToken(landlordToken);
 	}
 
 	private void landlordFailsAtCreatingProperty(String landlordId, String landlordToken) {
 		System.out.println("======================== LANDLORD FAILS AT CREATING PROPERTY");
-		RestAssured.baseURI = "http://localhost/";
+		RestAssured.baseURI = "http://localhost/properties/";
 		RestAssured.port = 8080;
 		failsWhenCreatingProperty("John Doe Landlord", landlordId, landlordToken);
 	}
 
 	private void scoreIs(Integer expectedScore, CreatedProperty createdProperty, CreatedUser createdTenant) {
-		RestAssured.baseURI = "http://localhost/";
+		RestAssured.baseURI = "http://localhost/properties/";
 		RestAssured.port = 8080;
 		System.out.println("======================== TENANT CHECKS PROPERTY SCORE");
 		ExtractableResponse<Response> retrievedProperty = getProperty(createdProperty.createdPropertyResponse.path("id"), createdTenant.userAccessToken());
