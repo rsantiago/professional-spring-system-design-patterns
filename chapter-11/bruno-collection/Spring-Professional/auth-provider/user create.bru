@@ -5,15 +5,15 @@ meta {
 }
 
 post {
-  url: http://localhost:8081/users/register
+  url: http://localhost:8080/auth/users/register
   body: json
   auth: none
 }
 
 body:json {
   {
-    "email": "user@example.com",
+    "email": "user232@example.com",
     "password": "userpass",
-    "user_type": "tenant"
+    "user_type": "landlord"
   }
 }

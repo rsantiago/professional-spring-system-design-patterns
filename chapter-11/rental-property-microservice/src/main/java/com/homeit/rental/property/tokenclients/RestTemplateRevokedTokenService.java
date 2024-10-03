@@ -19,7 +19,7 @@ public class RestTemplateRevokedTokenService {
     }
 
     public boolean isTokenRevoked(String token) {
-        String url = "http://localhost:8082/api/revoke-tokens?token=" + token;
+        String url = "http://revoke-token-service/api/revoke-tokens?token=" + token;
 
         // Create headers and add them to the request
         HttpHeaders headers = new HttpHeaders();
