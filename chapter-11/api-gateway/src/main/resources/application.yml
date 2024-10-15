@@ -33,12 +33,6 @@ spring:
             - StripPrefix=1
 
 
-
-
-
-
-
-
 logging:
   level:
     com.homeit.logs.GlobalFilterLogs: DEBUG

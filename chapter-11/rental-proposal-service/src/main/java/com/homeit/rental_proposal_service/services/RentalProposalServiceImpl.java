@@ -6,6 +6,7 @@ import com.homeit.rental_proposal_service.entities.Round;
 import com.homeit.rental_proposal_service.entities.RoundStates;
 import com.homeit.rental_proposal_service.events.RentalProposalEvent;
 import com.homeit.rental_proposal_service.repository.RentalProposalRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -20,6 +21,8 @@ public class RentalProposalServiceImpl implements RentalProposalService {
 
     private final RentalProposalRepository repository;
     private final KafkaTemplate<String, RentalProposalEvent> kafkaTemplate;
+    @Value("${rental.proposal.topic.name:sample-name}")
+    private String topicName;
 
     public RentalProposalServiceImpl(RentalProposalRepository repository, KafkaTemplate<String, RentalProposalEvent> kafkaTemplate) {
         this.repository = repository;
@@ -42,7 +45,7 @@ public class RentalProposalServiceImpl implements RentalProposalService {
             RentalProposalStates.OPEN.toString()))
             .flatMap( proposal ->
                 Mono.fromFuture(
-                    kafkaTemplate.send("proposal-topic",
+                    kafkaTemplate.send(topicName,
                         new RentalProposalEvent(
                             proposal.id(),
                             firstRound.roundId(),

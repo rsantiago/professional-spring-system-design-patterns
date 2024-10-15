@@ -35,4 +35,4 @@ public class GlobalFilterLogs implements GlobalFilter, Ordered {
     public int getOrder() {
       return -1; // Ensure this filter is applied first
     }
-  }
+}

@@ -145,6 +145,7 @@ public class RentalPropertyController {
     }
 
     @GetMapping(value = "/error")
+    @PreAuthorize("hasAuthority('SCOPE_rental_properties:read')")
     public ResponseEntity<List<RentalPropertyDTO>> runtimeExceptionSample() {
         throw new RuntimeException
             ("This was a sample unhandled runtime exception");
