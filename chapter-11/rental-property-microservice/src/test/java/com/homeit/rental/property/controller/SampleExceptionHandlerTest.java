@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -25,6 +27,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SampleExceptionHandlerTest {
 
     private final WebApplicationContext context;
+
+    @MockBean
+    private JwtDecoder jwtDecoder;
 
     @MockBean
     @Qualifier("jpaRentalPropertyService")
@@ -49,6 +54,7 @@ public class SampleExceptionHandlerTest {
     }
 
     @Test
+    @WithMockUser
     void testGetPropertyById() throws Exception {
         Mockito.when(rentalPropertyServiceMock.get(any()))
                 .thenThrow(new RuntimeException("an unexpected 500 error"));
@@ -64,6 +70,7 @@ public class SampleExceptionHandlerTest {
     }
 
     @Test
+    @WithMockUser
     void testExceptionEndpoint() throws Exception {
         mockMvc.perform(
                 get("/api/v1/rental-properties/error",
@@ -75,6 +82,7 @@ public class SampleExceptionHandlerTest {
     }
 
     @Test
+    @WithMockUser
     void testUpdateProperty() throws Exception {
         Mockito.when(rentalPropertyServiceMock.update(any(), any()))
             .thenThrow(
@@ -85,7 +93,7 @@ public class SampleExceptionHandlerTest {
                 createdUUID, UUID.randomUUID(),
             "Updated Property","123 Updated St",
             "Updated City", "Updated Country",
-            "54321", 1800.0);
+            "54321", 1, 1800.0);
 
         mockMvc.perform(
                 put("/api/v1/rental-properties/{id}",

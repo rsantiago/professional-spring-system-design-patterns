@@ -130,7 +130,7 @@ public class RentalPropertyControllerTest {
         RentalPropertyDTO property = new RentalPropertyDTO(
         null, UUID.randomUUID(),"Test Property Chapter 7",
         "123 Test St","Test City Chapter 7",
-        "Test Country", "12345",1200.0);
+        "Test Country", "12345", 1,1200.0);
 
         // Simulate creating a property
         String responseBody = mockMvc.perform(
@@ -150,7 +150,7 @@ public class RentalPropertyControllerTest {
             UUID.randomUUID(), UUID.randomUUID(),
             "New Property", "456 New St",
             "New City", "New Country",
-            "67890",1500.0);
+            "67890",1, 1500.0);
 
         mockMvc.perform(
                 post("/api/v1/rental-properties")
@@ -167,7 +167,7 @@ public class RentalPropertyControllerTest {
                 UUID.randomUUID(), UUID.randomUUID(),
                 "New Property", null,
                 "New City", "New Country",
-                "67890",1500.0);
+                "67890",1, 1500.0);
 
         mockMvc.perform(
                 post("/api/v1/rental-properties")
@@ -182,7 +182,7 @@ public class RentalPropertyControllerTest {
             createdProperty.id(), UUID.randomUUID(),
             "Updated Property","123 Updated St",
             "Updated City", "Updated Country",
-            "54321", 1800.0);
+            "54321", 1, 1800.0);
 
         mockMvc.perform(
                 put("/api/v1/rental-properties/{id}",
@@ -200,7 +200,7 @@ public class RentalPropertyControllerTest {
             createdProperty.id(), UUID.randomUUID(),
             "Partially Updated Property",
             null, null,
-            null, null, null);
+            null, null, 1, null);
 
         mockMvc.perform(
                 patch("/api/v1/rental-properties/{id}",

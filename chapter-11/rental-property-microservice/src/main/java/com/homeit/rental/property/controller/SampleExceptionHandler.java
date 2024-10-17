@@ -32,6 +32,8 @@ public class SampleExceptionHandler {
             problemDetail.setProperty("timestamp",
                 LocalDateTime.now().toString());
 
+            log.debug("The resulting error object: {}", problemDetail);
+
             return new ResponseEntity<>(problemDetail,
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }

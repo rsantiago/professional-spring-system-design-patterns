@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+##### endpoints
+      routes:
+        - id: authprovider
+          uri: lb://authprovider
+          predicates:
+            - Path=/auth/**
+          filters:
+            - StripPrefix=1
+        - id: revoketoken
+          uri: lb://revoke-token-service
+          predicates:
+            - Path=/revoke/**
+          filters:
+            - StripPrefix=1
+        - id: rentalproposal
+          uri: lb://rental-proposal-service
+          predicates:
+            - Path=/proposals/**
+        - id: rentalproperties
+          uri: lb://rental-property-microservice
+          predicates:
+            - Path=/properties/**
+          filters:
+            - StripPrefix=1
+
+
+logging:
+  level:
+    com.homeit.logs.GlobalFilterLogs: DEBUG
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.http.server.reactive: DEBUG
+    reactor.netty.http.server: DEBUG
+
+
+# application.yml
+server:
+  port: 8080
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
